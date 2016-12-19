@@ -4,10 +4,7 @@ exports.seed = function(knex, Promise) {
   return knex('users').del()
     .then(function () {
       return Promise.all([
-        // Inserts seed entries
-        // knex('users').insert({id: 1, colName: 'rowValue1'}),
-        // knex('users').insert({id: 2, colName: 'rowValue2'}),
-        knex('users').insert({username: 'symesharr', password: 'admin', email: 'symeshjb@gmail.com'})
+        knex('users').insert({username: 'symesharr', first_name:"Harrison", last_name:"Symes", password: 'admin', email: 'symeshjb@gmail.com'})
       ]);
     });
 };

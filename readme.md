@@ -40,7 +40,7 @@ If a non-authenticated user attempts any requests that require authentication, t
 The post object must take the form:
 
     {
-      "username": "symesharr",
+      "email": "symeshjb@gmail.com",
       "password": "admin"
     }
 
@@ -57,11 +57,46 @@ The post request will compare the username to the users table for a match, and w
 
     {
       "user": {
-        "username": "symesharr",
-        "email": "symeshjb@gmail.com"
+        ["username": "symesharr",]
+        "email": "symeshjb@gmail.com",
+        "first_name": "Harrison",
+        "last_name": "Symes"
         "user_id": 1,
         "user_created_at": "2016-12-16 05:41:15"
       }
     }
 
 ([back to summary](#summary))  
+
+
+### Signup as a user
+
+| Method | Endpoint | Usage | Returns |
+| ------ | -------- | ----- | ------- |
+| POST | `/users/signup` | signup as a new user | user |
+
+The post object must take the form:
+
+    {
+      "email": "symeshjb@gmail.com",
+      "first_name": "Harrison",
+      "last_name": "Symes",
+      ["username": "symesharr",]
+      "password": "admin"
+    }
+
+#### Response
+
+##### Status Codes:
+  * On success, the HTTP status code in the response header is 200 ('OK').
+  * If the singup information is invalid (email already taken), a 401 'Unauthorized' HTTP status code will be returned.
+  * If the data / object structure of the post is incorrect, a 400 'Bad Request' HTTP status code will be returned.
+  * In case of server error, the header status code is a 5xx error code and the response body contains an error object.
+
+The post request will compare the email to the users table to ensure the email, and on success will bcrypt hash the password and store it in the users stable along with the other provided info.  Returns user_id of user just created upon success
+
+    {
+      "user_id": 1
+    }
+
+([back to summary](#summary))
