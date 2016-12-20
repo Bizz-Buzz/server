@@ -7,6 +7,11 @@ getUserByEmail = (email) => {
     .where('email', email)
 }
 
+getUserById = (id) => {
+  return knex('users')
+    .where('user_id', id)
+}
+
 createNewUser = (username, first_name, last_name, email, password) => {
   return knex('users')
     .insert({username, first_name, last_name, email, password})
@@ -14,5 +19,6 @@ createNewUser = (username, first_name, last_name, email, password) => {
 
 module.exports = {
   getUserByEmail,
+  getUserById,
   createNewUser
 }

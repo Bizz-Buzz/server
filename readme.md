@@ -40,9 +40,11 @@ If a non-authenticated user attempts any requests that require authentication, t
 The post object must take the form:
 
     {
-      "email": "symeshjb@gmail.com",
+      "username": "symeshjb@gmail.com",
       "password": "admin"
     }
+
+    //The email must have the key name "username" for passport auth functionality. The email column in the users table will still be used for comparison
 
 #### Response
 

@@ -10,6 +10,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
+  console.log("login");
   res.json({'user': req.user})
 })
 
