@@ -3,6 +3,7 @@ var router = express.Router();
 var bcrypt = require('bcrypt')
 var passport = require('../passport')
 const userDb = require('../db/userDb')
+const bizzDb = require('../db/bizzDb')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -11,7 +12,13 @@ router.get('/', function(req, res, next) {
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
   console.log("login");
-  res.json({'user': req.user})
+  bizzDb.getBizzListByUser(req.user.user_id)
+    .then((bizz_list) => {
+      res.json({'user': req.user, bizz_list})
+    })
+    .catch((err) => {
+      res.json({err})
+    })
 })
 
 // router.post('/login', (req, res) => {
