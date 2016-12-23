@@ -12,9 +12,9 @@ getUserById = (id) => {
     .where('user_id', id)
 }
 
-createNewUser = (username, first_name, last_name, email, password) => {
+createNewUser = (first_name, last_name, email, password) => {
   return knex('users')
-    .insert({username, first_name, last_name, email, password})
+    .insert({first_name, last_name, email, password})
 }
 
 module.exports = {

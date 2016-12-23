@@ -3,6 +3,7 @@ var router = express.Router();
 var bcrypt = require('bcrypt')
 var passport = require('../passport')
 const userDb = require('../db/userDb')
+const bizzDb = require('../db/bizzDb')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -11,7 +12,13 @@ router.get('/', function(req, res, next) {
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
   console.log("login");
-  res.json({'user': req.user})
+  bizzDb.getBizzListByUser(req.user.user_id)
+    .then((bizz_list) => {
+      res.json({'user': req.user, bizz_list})
+    })
+    .catch((err) => {
+      res.json({err})
+    })
 })
 
 // router.post('/login', (req, res) => {
@@ -26,13 +33,16 @@ router.post('/signup', (req, res) => {
   console.log("req body", req.body);
   userDb.getUserByEmail(req.body.email)
     .then((user) => {
+      console.log({user});
       if (user.length === 0) {
         bcrypt.genSalt(12, (err, salt) => {
           if (err) res.json({err})
           bcrypt.hash(req.body.password, salt, (err, hash) => {
             if(err) res.json({err})
-            userDb.createNewUser(req.body.username.toLowerCase(), req.body.first_name, req.body.last_name, req.body.email, hash)
+            console.log({hash});
+            userDb.createNewUser(req.body.first_name, req.body.last_name, req.body.email, hash)
               .then((user_id) => {
+                console.log({user_id});
                 res.json({user_id})
               })
           })
