@@ -26,13 +26,16 @@ router.post('/signup', (req, res) => {
   console.log("req body", req.body);
   userDb.getUserByEmail(req.body.email)
     .then((user) => {
+      console.log({user});
       if (user.length === 0) {
         bcrypt.genSalt(12, (err, salt) => {
           if (err) res.json({err})
           bcrypt.hash(req.body.password, salt, (err, hash) => {
             if(err) res.json({err})
-            userDb.createNewUser(req.body.username.toLowerCase(), req.body.first_name, req.body.last_name, req.body.email, hash)
+            console.log({hash});
+            userDb.createNewUser(req.body.first_name, req.body.last_name, req.body.email, hash)
               .then((user_id) => {
+                console.log({user_id});
                 res.json({user_id})
               })
           })
