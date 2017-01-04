@@ -5,13 +5,10 @@ var passport = require('../passport')
 const userDb = require('../db/userDb')
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.json({users: [{name: 'Timmy'}]});
+router.get('/home', ensureAuthenticated, function(req, res, next) {
+  console.log(req.query.bizz_name);
+  res.json(req.query.bizz_name)
 });
-
-router.post('/login', passport.authenticate('local'), (req, res) => {
-  res.json({'user': req.user})
-})
 
 // router.post('/login', (req, res) => {
 //   userDb.getUserByUsername(req.body.username)
@@ -24,5 +21,20 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 router.post('/signup', (req, res) => {
   console.log(req.body);
 })
+
+function ensureAuthenticated (req, res, next) {
+  if (req.isAuthenticated()) {
+    return next()
+  } else {
+    res.json({
+      'error':
+      {
+        'type': 'auth',
+        'code': 401,
+        'message': 'authentication failed'
+      }
+    })
+  }
+}
 
 module.exports = router;
