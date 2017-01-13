@@ -7,6 +7,11 @@ createNewBizz = (bizz_name, bizz_owner) => {
     .insert({bizz_name, bizz_owner})
 }
 
+getBizzByName = (bizz_name) => {
+  return knex('bizzTable')
+    .where('bizz_name', bizz_name)
+}
+
 getBizzListByUser = (user_id) => {
   return knex('bizzTable')
     .where('bizz_owner', user_id)
@@ -14,5 +19,6 @@ getBizzListByUser = (user_id) => {
 
 module.exports = {
   createNewBizz,
+  getBizzByName,
   getBizzListByUser
 }
