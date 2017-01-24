@@ -17,6 +17,12 @@ getBizzListByUser = (user_id) => {
     .where('bizz_owner', user_id)
 }
 
+getBuzzListByBizzId = (bizz_id) => {
+  return knex('buzzList')
+    .where('bizz_id', bizz_id)
+    .orderBy('buzz_created_at', 'desc')
+}
+
 module.exports = {
   createNewBizz,
   getBizzByName,
