@@ -6,7 +6,7 @@ const userDb = require('../db/userDb')
 const bizzDb = require('../db/bizzDb')
 
 /* GET users listing. */
-router.get('/list', ensureAuthenticated, function(req, res, next) {
+router.get('/buzzList', ensureAuthenticated, function(req, res, next) {
   console.log(req.query.bizz_name);
   bizzDb.getBuzzListByBizzId(req.query.bizz_id)
     .then((buzzList) => {

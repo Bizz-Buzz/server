@@ -26,5 +26,6 @@ getBuzzListByBizzId = (bizz_id) => {
 module.exports = {
   createNewBizz,
   getBizzByName,
-  getBizzListByUser
+  getBizzListByUser,
+  getBuzzListByBizzId
 }
