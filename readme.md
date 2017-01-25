@@ -55,17 +55,26 @@ The post object must take the form:
   * In case of server error, the header status code is a 5xx error code and the response body contains an error object.
 
 
-The post request will compare the username to the users table for a match, and will bcrypt compare the password attempt to the hashed password in the users table. Returns user information (minus password) on success. A user session is created upon success.
+The post request will compare the username to the users table for a match, and will bcrypt compare the password attempt to the hashed password in the users table. Returns user information (minus password)  and list of Bizz's that the authenticated user is a part of on success. A user session is created upon success.
 
     {
-      "user": {
-        ["username": "symesharr",]
+      user: {
         "email": "symeshjb@gmail.com",
         "first_name": "Harrison",
-        "last_name": "Symes"
-        "user_id": 1,
-        "user_created_at": "2016-12-16 05:41:15"
-      }
+        "last_name": "Symes",
+        ["username": "symesharr",]
+        "password": "admin"
+      },
+      bizzList: [
+        {
+          bizz_created_at: "2016-12-23 09:08:27",
+          bizz_id: 1,
+          bizz_members: 1,
+          bizz_name: "Bizz-Buzz",
+          bizz_owner: 1
+        },
+        {}, ...
+      ]
     }
 
 ([back to summary](#summary))  
@@ -99,6 +108,42 @@ The post request will compare the email to the users table to ensure the email, 
 
     {
       "user_id": 1
+    }
+
+([back to summary](#summary))
+
+
+### Get bizz list by user
+
+| Method | Endpoint | Usage | Returns |
+| ------ | -------- | ----- | ------- |
+| GET | `/bizz/list` | get a list of Bizz's that a user is a part of | bizzList |
+
+The query object must take the form:
+
+    {
+      bizz_name: "Bizz-Buzz"
+    }
+
+#### Response
+
+##### Status Codes:
+  * On success, the HTTP status code in the response header is 200 ('OK').
+  * If the data / object structure of the query is incorrect, a 400 'Bad Request' HTTP status code will be returned.
+  * In case of server error, the header status code is a 5xx error code and the response body contains an error object.
+
+The get request will retrieve a the list of Bizz's that the authenticated
+
+    {
+      [
+        {
+          bizz_created_at: "2016-12-23 09:08:27",
+          bizz_id: 1,
+          bizz_members: 1,
+          bizz_name: "Bizz-Buzz",
+          bizz_owner: 1
+        }
+      ]
     }
 
 ([back to summary](#summary))
