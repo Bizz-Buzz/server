@@ -34,8 +34,19 @@ router.post('/new', ensureAuthenticated, function(req, res) {
     })
 })
 
+router.get('/settings', ensureAuthenticated, function(req, res) {
+  bizzDb.getFollowRequestsByBizzId(req.query.bizz_id)
+    .then((follow_requests) => {
+      console.log(follow_requests);
+      res.send({follow_requests})
+    })
+})
+
+
+
 /* GET users listing. */
 router.get('/buzzList', ensureAuthenticated, function(req, res, next) {
+
   bizzDb.getBuzzListByBizzId(req.query.bizz_id)
     .then((buzzList) => {
       res.json(buzzList)
@@ -57,6 +68,20 @@ router.post('/request', ensureAuthenticated, function(req, res) {
     })
     .catch((err) => {
       res.send(err)
+    })
+})
+
+router.post('/request/accept', ensureAuthenticated, function(req, res) {
+  console.log("query", req.body.request_id);  bizzDb.getFollowRequestById(req.body.request_id)
+    .then((response) => {
+        console.log({response});
+        bizzDb.createFollow(response[0].bizz_followed, response[0].follower_id, false)
+          .then((follow_id) => {
+            bizzDb.deleteFollowRequestById(req.body.request_id)
+              .then((response) => {
+                res.json("request accepted")
+              })
+          })
     })
 })
 

@@ -63,6 +63,27 @@ getFollowRequestsByUser = (user_id) => {
     .where('follower_id', user_id)
 }
 
+getFollowRequestsByBizzId = (bizz_id) => {
+  return knex('followRequests')
+    .join('users', 'followRequests.follower_id', 'users.user_id')
+    .where('followRequests.bizz_followed', bizz_id)
+}
+
+deleteFollowRequestById = (request_id) => {
+  return knex('followRequests')
+    .where('request_id', request_id)
+    .del()
+}
+
+getFollowRequestById = (request_id) => {
+  console.log({request_id});
+  return knex('followRequests')
+    .where('request_id', request_id)
+}
+
+
+createFollow
+
 module.exports = {
   createNewBizz,
   createBuzz,
@@ -74,5 +95,8 @@ module.exports = {
   getBuzzListByBizzId,
   getNotFollowing,
   createFollowRequest,
-  getFollowRequestsByUser
+  getFollowRequestsByUser,
+  getFollowRequestsByBizzId,
+  deleteFollowRequestById,
+  getFollowRequestById
 }
