@@ -20,6 +20,7 @@ getBizzListByUser = (user_id) => {
 getBuzzListByBizzId = (bizz_id) => {
   return knex('buzzList')
     .where('bizz_id', bizz_id)
+    .join('users', 'buzzList.poster_id', 'users.user_id')
     .orderBy('buzz_created_at', 'desc')
 }
 
