@@ -19,6 +19,7 @@ router.get('/buzzList', ensureAuthenticated, function(req, res, next) {
 
 function ensureAuthenticated (req, res, next) {
   if (req.isAuthenticated()) {
+    console.log("no auth");
     return next()
   } else {
     res.json({
