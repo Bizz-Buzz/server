@@ -5,11 +5,6 @@ var passport = require('../passport')
 const userDb = require('../db/userDb')
 const bizzDb = require('../db/bizzDb')
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.json({users: [{name: 'Timmy'}]});
-});
-
 router.post('/login', passport.authenticate('local'), (req, res) => {
   console.log("login");
   bizzDb.getFollowsByUserId(req.user.user_id)

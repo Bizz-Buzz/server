@@ -31,10 +31,16 @@ getBuzzListByBizzId = (bizz_id) => {
     .orderBy('buzz_created_at', 'desc')
 }
 
+getNotFollowing = (bizzIds) => {
+  return knex('bizzTable')
+    .whereNotIn('bizz_id', bizzIds)
+}
+
 module.exports = {
   createNewBizz,
   getBizzByName,
   getFollowsByUserId,
   getBizzListByBizzIdArray,
-  getBuzzListByBizzId
+  getBuzzListByBizzId,
+  getNotFollowing
 }
