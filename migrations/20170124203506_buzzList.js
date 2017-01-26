@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
     table.timestamp('buzz_created_at').defaultTo(knex.fn.now())
     table.integer('poster_id')
     table.integer('bizz_id')
-    table.integer('responses')
+    table.integer('responses').defaultTo(0)
   })
 };
 
