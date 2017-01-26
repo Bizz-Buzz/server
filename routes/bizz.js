@@ -15,12 +15,23 @@ router.get('/buzzList', ensureAuthenticated, function(req, res, next) {
   // res.json(req.query.bizz_name)
 });
 
-
+router.get('/', ensureAuthenticated, function(req, res, next) {
+  //console.log(req.user);
+  bizzDb.getFollowsByUserId(req.user.user_id)
+    .then((follows) => {
+      var bizzIds = follows.map((follow) => follow.bizz_id)
+      bizzDb.getNotFollowing(bizzIds)
+        .then((all_bizz_list) =>{
+          res.send(all_bizz_list)
+        })
+    })
+})
 
 function ensureAuthenticated (req, res, next) {
   if (req.isAuthenticated()) {
     return next()
   } else {
+    console.log('no auth', req.user);
     res.json({
       'error':
       {

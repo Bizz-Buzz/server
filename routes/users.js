@@ -5,19 +5,20 @@ var passport = require('../passport')
 const userDb = require('../db/userDb')
 const bizzDb = require('../db/bizzDb')
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.json({users: [{name: 'Timmy'}]});
-});
-
 router.post('/login', passport.authenticate('local'), (req, res) => {
   console.log("login");
-  bizzDb.getBizzListByUser(req.user.user_id)
-    .then((bizz_list) => {
-      res.json({'user': req.user, bizz_list})
-    })
-    .catch((err) => {
-      res.json({err})
+  bizzDb.getFollowsByUserId(req.user.user_id)
+    .then((follows) => {
+      console.log({follows});
+      var bizzIds = follows.map((follow) => follow.bizz_id)
+      bizzDb.getBizzListByBizzIdArray(bizzIds)
+      .then((bizz_list) => {
+        console.log({bizz_list});
+        res.json({'user': req.user, bizz_list})
+      })
+      .catch((err) => {
+        res.json({err})
+      })
     })
 })
 
