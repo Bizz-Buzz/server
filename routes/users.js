@@ -6,14 +6,11 @@ const userDb = require('../db/userDb')
 const bizzDb = require('../db/bizzDb')
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
-  console.log("login");
   bizzDb.getFollowsByUserId(req.user.user_id)
     .then((follows) => {
-      console.log({follows});
       var bizzIds = follows.map((follow) => follow.bizz_id)
       bizzDb.getBizzListByBizzIdArray(bizzIds)
       .then((bizz_list) => {
-        console.log({bizz_list});
         res.json({'user': req.user, bizz_list})
       })
       .catch((err) => {
@@ -34,16 +31,13 @@ router.post('/signup', (req, res) => {
   console.log("req body", req.body);
   userDb.getUserByEmail(req.body.email)
     .then((user) => {
-      console.log({user});
       if (user.length === 0) {
         bcrypt.genSalt(12, (err, salt) => {
           if (err) res.json({err})
           bcrypt.hash(req.body.password, salt, (err, hash) => {
             if(err) res.json({err})
-            console.log({hash});
             userDb.createNewUser(req.body.first_name, req.body.last_name, req.body.email, hash)
               .then((user_id) => {
-                console.log({user_id});
                 res.json({user_id})
               })
           })

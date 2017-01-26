@@ -12,6 +12,11 @@ getBizzByName = (bizz_name) => {
     .where('bizz_name', bizz_name)
 }
 
+getBizzById = (bizz_id) => {
+  return knex('bizzTable')
+    .where('bizz_id', bizz_id)
+}
+
 getFollowsByUserId = (user_id) => {
   return knex
     .select('bizz_id')
@@ -41,6 +46,11 @@ getNotFollowing = (bizzIds) => {
     .whereNotIn('bizz_id', bizzIds)
 }
 
+createFollow = (bizz_id, user_id, admin) => {
+  return knex('follows')
+    .insert({bizz_id, user_id, admin})
+}
+
 createFollowRequest = (user_id, bizz_id) => {
   return knex('followRequests')
     .insert({follower_id: user_id, bizz_followed: bizz_id})
@@ -56,7 +66,9 @@ getFollowRequestsByUser = (user_id) => {
 module.exports = {
   createNewBizz,
   createBuzz,
+  createFollow,
   getBizzByName,
+  getBizzById,
   getFollowsByUserId,
   getBizzListByBizzIdArray,
   getBuzzListByBizzId,
