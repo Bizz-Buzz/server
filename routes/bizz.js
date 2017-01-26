@@ -6,7 +6,6 @@ const userDb = require('../db/userDb')
 const bizzDb = require('../db/bizzDb')
 
 router.get('/find', ensureAuthenticated, function(req, res, next) {
-  console.log(req.user);
   bizzDb.getFollowsByUserId(req.user.user_id)
     .then((follows) => {
       var bizzIds = follows.map((follow) => follow.bizz_id)
@@ -21,9 +20,22 @@ router.get('/find', ensureAuthenticated, function(req, res, next) {
     })
 })
 
+router.post('/new', ensureAuthenticated, function(req, res) {
+  console.log("create bizz");
+  bizzDb.createNewBizz(req.body.bizz_name, req.user.user_id)
+    .then((bizz_id) => {
+      bizzDb.createFollow(bizz_id[0], req.user.user_id, true)
+        .then((follow_id) => {
+          bizzDb.getBizzById(bizz_id[0])
+            .then((bizz) => {
+              res.json({bizz: bizz[0]})
+            })
+        })
+    })
+})
+
 /* GET users listing. */
 router.get('/buzzList', ensureAuthenticated, function(req, res, next) {
-  console.log(req.query.bizz_name);
   bizzDb.getBuzzListByBizzId(req.query.bizz_id)
     .then((buzzList) => {
       res.json(buzzList)
